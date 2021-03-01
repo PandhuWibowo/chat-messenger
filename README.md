@@ -8,7 +8,7 @@ I hope you guys have been installed the node.js and npm in your local system. Th
 
 ### Config
 
-1. Create .env file in your project. You can see the value at **.env.example** file
+1. Create .env file in your project. You can see the value at **example.env.** file
 2. Please fill **MYSQL_HOST**, **MYSQL_USERNAME**, **MYSQL_PASSWORD**, **MYSQL_PORT**, **MYSQL_DB**, **SERVER_HOSTNAME**, and **SERVER_PORT** to your local
 
 
