@@ -47,7 +47,44 @@ class MessageController {
       return res.status(200).send({
         status: 200,
         message: 'Receivers successfully fetched',
-        data: dataReceivers
+        data: {
+          from_id: req.params.from_id,
+          data_receiver: dataReceivers
+        }
+      })
+    } catch (error) {
+      console.error(error)
+      if (error.status) return res.status(error.status).send({
+        status: error.status,
+        message: error.message
+      })
+      else return res.status(500).send({
+        status: 500,
+        message: 'Internal Server Error'
+      })
+    }
+  }
+
+  static showMessage = async (req, res) => {
+    try {
+      const [allMessages] = await Message.showMessage(req.params.from_id, req.params.to_id)
+      if (allMessages.length === 0) return res.status(200).send({
+        status: 200,
+        message: 'No Receivers found',
+        data: []
+      })
+
+      const arrMessageSpecifyOnly = []
+      const params = [req.params.from_id, req.params.to_id]
+      for (const message of allMessages) {
+        if (!params.includes(message.from_id) || !params.includes(message.to_id)) continue
+        arrMessageSpecifyOnly.push(message)
+      }
+      arrMessageSpecifyOnly.sort((a, b) => b.timestamp_sent - a.timestamp_sent)
+      return res.status(200).send({
+        status: 200,
+        message: 'Messages successfully fetched',
+        data: arrMessageSpecifyOnly
       })
     } catch (error) {
       console.error(error)

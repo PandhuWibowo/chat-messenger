@@ -18,5 +18,6 @@ router.post('/users', UserController.createUser)
  */
 router.post('/messages/from/:from_id/to/:to_id/send', MessageController.sendMessage)
 router.get('/messages/from/:from_id/show-receiver', MessageController.showReceiver)
+router.get('/messages/from/:from_id/to/:to_id/show-message', MessageController.showMessage)
 
 export default router;

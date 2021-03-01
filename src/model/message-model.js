@@ -13,6 +13,10 @@ class Message {
   static showReceiver = (fromId) => {
     return db.execute('SELECT DISTINCT from_id, to_id FROM messages JOIN users as a ON a.id = messages.to_id JOIN users as b ON b.id = messages.from_id WHERE from_id = ? OR to_id = ?', [fromId, fromId])
   }
+
+  static showMessage = (fromId, toId) => {
+    return db.execute('SELECT * FROM messages JOIN users as a ON a.id = messages.to_id JOIN users as b ON b.id = messages.from_id WHERE from_id = ? OR to_id = ? AND from_id = ? OR to_id = ?', [fromId, fromId, toId, toId])
+  }
 }
 
 export default Message
