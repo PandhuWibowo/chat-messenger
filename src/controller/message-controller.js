@@ -98,6 +98,31 @@ class MessageController {
       })
     }
   }
+
+  static replyMessage = async (req, res) => {
+    try {
+      const [isMessageExist] = await Message.showMessageById(req.params.message_reply_id)
+
+      if (isMessageExist.length === 0) return res.status(200).send({
+        status: 404,
+        message: 'No Message found',
+        data: {}
+      })
+      const payload = {...req.params, ...req.body}
+      const results = await Message.replyMessage(payload)
+      if (results[0].affectedRows > 0) return res.status(201).send({status: 201, message: 'Reply message successfully stored'})
+    } catch (error) {
+      console.error(error)
+      if (error.status) return res.status(error.status).send({
+        status: error.status,
+        message: error.message
+      })
+      else return res.status(500).send({
+        status: 500,
+        message: 'Internal Server Error'
+      })
+    }
+  }
 }
 
 export default MessageController
