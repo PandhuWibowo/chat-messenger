@@ -1,4 +1,5 @@
 import Message from '../model/message-model'
+import User from '../model/user-model'
 
 class MessageController {
   static sendMessage = async (req, res) => {
@@ -30,10 +31,23 @@ class MessageController {
         message: 'No Receivers found',
         data: []
       })
+      const arrReceivers = []
+      allReceiver.forEach(receiver => {
+        if (req.params.from_id !== receiver.to_id) arrReceivers.push(receiver.to_id)
+        if (req.params.from_id !== receiver.from_id) arrReceivers.push(receiver.from_id)
+      });
+
+      const dataReceivers = []
+      for (const receiverId of arrReceivers) {
+        const [receiver] = await User.getUser(receiverId)
+        const [oneIndex] = receiver
+        dataReceivers.push(oneIndex)
+      }
+
       return res.status(200).send({
         status: 200,
         message: 'Receivers successfully fetched',
-        data: allReceiver
+        data: dataReceivers
       })
     } catch (error) {
       console.error(error)
